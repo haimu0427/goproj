@@ -22,6 +22,38 @@ func SignUp(name string, password string, balance int) *FamilyFinance {
 		Details: []string{},
 		Change:  []int{},
 	}
+
+}
+func CreateUser() *FamilyFinance {
+	for {
+		var username, password, password2 string
+		var balance int
+		fmt.Println("请输入用户名:")
+		fmt.Scanln(&username)
+		fmt.Println("请输入密码:")
+		fmt.Scanln(&password)
+		fmt.Println("请再次输入密码:")
+		fmt.Scanln(&password2)
+		if password == password2 {
+			fmt.Println("需要存钱吗? 需要请按0, 不需要请按1")
+			var choice int
+			fmt.Scanln(&choice)
+		loop:
+			switch choice {
+			case 0:
+				fmt.Println("请输入存入金额:")
+			case 1:
+				balance = 0
+			default:
+				fmt.Println("输入错误，请重新输入")
+				goto loop
+			}
+			fmt.Scanln(&balance)
+			fmt.Println("注册成功")
+
+		}
+		return SignUp(username, password, balance)
+	}
 }
 
 func (f *FamilyFinance) showNowBalance() {

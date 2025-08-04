@@ -6,18 +6,18 @@ import (
 	"homeControl/familyFinance"
 )
 
-var users []*familyFinance.FamilyFinance
-
 func main() {
 	//初始化两个用户
-	users = append(users, familyFinance.SignUp("张三", "123456", 1000))
-	users = append(users, familyFinance.SignUp("李四", "654321", 2000))
+	admin.InitUsers()
+
 	fmt.Println("欢迎使用家庭收支记录软件")
 	fmt.Println("请先登录")
-	if LoginLoop() {
-		Panel(users[0], users[1])
+	if LoginLoop() != nil {
+		Panel(admin.Users[0], admin.Users[1])
 	}
 }
+
+// Panel 显示家庭收支记录软件的主界面
 func Panel(f1, f2 *familyFinance.FamilyFinance) {
 	for {
 		var keyboard int
@@ -50,7 +50,7 @@ func Panel(f1, f2 *familyFinance.FamilyFinance) {
 		}
 	}
 }
-func LoginLoop() bool {
+func LoginLoop() *familyFinance.FamilyFinance {
 	for {
 		fmt.Println("--------------登录界面--------------")
 		fmt.Println("0. 管理员操作")
@@ -67,7 +67,11 @@ func LoginLoop() bool {
 			fmt.Scanln(&adminPassword)
 			if adminPassword == admin.AdminPassword {
 				fmt.Println("管理员登录成功")
-				admin.AdminPanel()
+				// // 同步用户列表到admin包
+				// admin.Initadmin.Users(admin.Users)
+				// admin.AdminPanel()
+				// // 从admin包获取更新后的用户列表
+				// admin.Users = admin.Getadmin.Users()
 			}
 		case 1:
 			for {
@@ -76,49 +80,20 @@ func LoginLoop() bool {
 				var username, password string
 				fmt.Scanln(&username)
 				fmt.Scanln(&password)
-				if (username == users[0].Name && password == users[0].Password) ||
-					(username == users[1].Name && password == users[1].Password) {
+				if (username == admin.Users[0].User.Name && password == admin.Users[0].User.Password) ||
+					(username == admin.Users[1].User.Name && password == admin.Users[1].User.Password) {
 					fmt.Println("登录成功")
-					return true
+					return admin.Users[0]
 				} else {
 					fmt.Println("用户名或密码错误，请重新输入")
-					return false
+					return nil
 				}
 			}
 
 		case 2:
-			for {
-				var username, password, password2 string
-				fmt.Println("请输入用户名:")
-				fmt.Scanln(&username)
-				fmt.Println("请输入密码:")
-				fmt.Scanln(&password)
-				fmt.Println("请再次输入密码:")
-				fmt.Scanln(&password2)
-				if password == password2 {
-					fmt.Println("需要存钱吗? 需要请按0, 不需要请按1")
-					var balance int
-					var choice int
-					fmt.Scanln(&choice)
-				loop:
-					switch choice {
-					case 0:
-						fmt.Println("请输入存入金额:")
-					case 1:
-						balance = 0
-					default:
-						fmt.Println("输入错误，请重新输入")
-						goto loop
-					}
-					fmt.Scanln(&balance)
-					users = append(users, familyFinance.SignUp(username, password, balance))
-					fmt.Println("注册成功")
-
-					return true
-				}
-			}
+			admin.Users = append(admin.Users, familyFinance.CreateUser())
 		case 3:
-			return false
+			return nil
 		}
 	}
 }
