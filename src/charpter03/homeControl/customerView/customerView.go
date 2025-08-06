@@ -1,5 +1,9 @@
 package customerView
+
 import (
 	"fmt"
 )
-func 
+
+func nihao() {
+	fmt.Println("你好！")
+}
