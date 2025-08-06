@@ -1,0 +1,13 @@
+[
+    {
+        "path": "src/file/json/test.json",
+        "type": "file",
+        "content": "{\n  \"key\": \"value\"\n}",
+        "credit": "任何一个数据结构都可以被序列换转换为json格式."
+    },
+    {
+        "path": "src/file/file5/abc.txt",
+        "type": "file",
+        "content": "ab123 89popj\nyy98 heelo\n-a --- IGNORE ---"
+    }
+]

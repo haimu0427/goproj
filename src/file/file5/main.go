@@ -25,12 +25,9 @@ func main() {
 	var count CharCount
 	reader := bufio.NewReader(file)
 	for {
-		str, err :=
-			reader.ReadString('n')
-		if err == io.EOF {
-			break
-		}
-		for _, v := range str {
+		str, err := reader.ReadString('\n')
+		rune1 := []rune(str)
+		for _, v := range rune1 {
 			switch {
 			case v >= 'a' && v <= 'z', v >= 'A' && v <= 'Z':
 				count.ChCount++
@@ -42,6 +39,9 @@ func main() {
 				count.OtherCount++
 			}
 		}
-
+		if err == io.EOF {
+			break
+		}
 	}
+	fmt.Printf("Character Count: %d\nNumber Count: %d\nSpace Count: %d\nOther Count: %d\n", count.ChCount, count.NumCount, count.SpaceCount, count.OtherCount)
 }
